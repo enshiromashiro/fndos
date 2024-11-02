@@ -4,16 +4,16 @@ import "./index.css";
 import App from "./App.tsx";
 
 const setup = () => {
-	const root = document.getElementById("root");
-	if (!root) {
-		console.error("#root is not found.");
-		return;
-	}
+  const root = document.getElementById("root");
+  if (!root) {
+    console.error("#root is not found.");
+    return;
+  }
 
-	createRoot(root).render(
-		<StrictMode>
-			<App />
-		</StrictMode>,
-	);
+  createRoot(root).render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  );
 };
 setup();
