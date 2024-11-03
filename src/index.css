@@ -1,10 +1,12 @@
 :root {
   --main-bg-color: #ccc;
+  --main-font-family: sans-serif;
+
   --app-bg-color: #eee;
 
   --header-color: rgba(0, 0, 0, 0.65);
 
-  --console-font: system-ui;
+  --console-font: monospace;
   --console-font-size: 1.2em;
   --conslole-textarea-border-color: rgba(0, 0, 0, 0.2);
 

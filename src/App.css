@@ -9,6 +9,7 @@
   margin: 0 auto;
   padding: 2em;
 
+  font-family: var(--main-font-family);
   text-align: center;
 
   color: var(--main-text-color);
