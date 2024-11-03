@@ -35,10 +35,12 @@ h1 {
   padding: 1em;
 }
 
+#console div {
+  height: 100%;
+}
+
 #console > div {
   flex-basis: 45%;
-
-  align-self: stretch;
 }
 
 #console textarea {
@@ -63,10 +65,10 @@ h1 {
   color: var(--output-color);
 }
 
-#console #code {
+#code textarea {
   background-color: var(--code-bg-color);
 }
 
-#console #code:focus {
+#code textarea:focus {
   background-color: var(--code-focus-bg-color);
 }

@@ -1,4 +1,5 @@
 import "./App.css";
+import CodeArea from "./components/CodeArea";
 
 const App = () => {
   return (
@@ -6,7 +7,7 @@ const App = () => {
       <h1>funDOS</h1>
       <div id="console">
         <div id="left-pane">
-          <textarea id="code" />
+          <CodeArea />
         </div>
         <div id="right-pane">
           <textarea
