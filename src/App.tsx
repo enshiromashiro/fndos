@@ -2,15 +2,16 @@ import { useState } from "react";
 import "./App.css";
 import InputArea from "./console/InputArea";
 import OutputArea from "./console/OutputArea";
-import { makeInitialOutput, makeNewOutput } from "./shell";
+import { type Shell, evaluate, initializeShell } from "./shell";
 
 const App = () => {
   const [input, setInput] = useState<string>("");
-  const [output, setOutput] = useState<string>(makeInitialOutput());
+  const [shell, setShell] = useState<Shell>(initializeShell());
 
   const onEnter = () => {
-    setOutput(makeNewOutput(input, output));
+    const sh = evaluate(shell, input);
     setInput("");
+    setShell(sh);
   };
 
   return (
@@ -21,7 +22,7 @@ const App = () => {
           <InputArea input={input} setInput={setInput} onEnter={onEnter} />
         </div>
         <div id="right-pane">
-          <OutputArea output={output} />
+          <OutputArea output={shell.output} />
         </div>
       </div>
     </>

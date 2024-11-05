@@ -1,21 +1,34 @@
 export const name = "FN-DOS";
 export const version = __APP_VERSION__;
-export const prompt = "? ";
 export const inputPlaceholder = "type something...";
+const prompt = "? ";
 
-const description = [
+const info = [
   `${name} version ${version}`,
   "Copyright 2024 by Whitespace Laboratory",
 ];
-const firstHelp = [
+const help = [
   "Type commands in the left and type Ctrl + Enter. So it evaluates input and pinrt result in the right.",
 ];
+const initialOutput = `${info.join("\n")}\n\n${help.join("\n")}\n\n${prompt}`;
 
-export const makeInitialOutput = () => {
-  const desc = description.join("\n");
-  const help = firstHelp.join("\n");
-  return `${desc}\n\n${help}\n\n${prompt}`;
+export type Shell = {
+  inputHistory: string[];
+  output: string;
 };
 
-export const makeNewOutput = (input: string, output: string) =>
-  `${output}${input}\n${prompt}`;
+export const initializeShell = (): Shell => {
+  const shell = {
+    inputHistory: [],
+    output: initialOutput,
+  };
+  return { ...shell };
+};
+
+export const evaluate = (sh: Shell, input: string): Shell => {
+  const result = input;
+  return {
+    inputHistory: [...sh.inputHistory, input],
+    output: `${sh.output}${input}\n${result}\n${prompt}`,
+  };
+};
