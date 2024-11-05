@@ -1,3 +1,6 @@
+import { parse } from "./parse";
+import { printTokens, tokenize } from "./tokenize";
+
 export const name = "FN-DOS";
 export const version = __APP_VERSION__;
 export const inputPlaceholder = "type something...";
@@ -26,6 +29,11 @@ export const initializeShell = (): Shell => {
 };
 
 export const evaluate = (sh: Shell, input: string): Shell => {
+  const toks = tokenize(input);
+  console.log(printTokens(toks));
+  const ast = parse(toks);
+  console.log(ast);
+
   const result = input;
   return {
     inputHistory: [...sh.inputHistory, input],
