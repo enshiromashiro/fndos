@@ -1,3 +1,5 @@
+import { type Result, err, ok } from "./result";
+
 export enum TOKEN {
   UNKNOWN = 0,
   END_OF_INPUT = 1,
@@ -54,7 +56,20 @@ const getch = (state: TokenizerState): string | null => {
   return ch;
 };
 
-export const tokenize = (input: string): Token[] => {
+class TokenizeError extends Error {
+  readonly ch: string;
+  readonly reason: string;
+
+  constructor(ch: string, reason: string) {
+    const msg = `ch = ${ch}, reason = ${reason}`;
+    super(msg);
+
+    this.ch = ch;
+    this.reason = reason;
+  }
+}
+
+export const tokenize = (input: string): Result<Token[], TokenizeError> => {
   const state = initTokenizer(input);
 
   for (let ch = getch(state); ch !== null; ch = getch(state)) {
@@ -67,13 +82,12 @@ export const tokenize = (input: string): Token[] => {
     } else if (" \n".indexOf(ch) !== -1) {
       tok = { ttype: TOKEN.WHITESPACE, s: ch };
     } else {
-      const e = { ch, reasone: "unknown character" };
-      console.error(e);
-      throw new Error(`${e}`);
+      const e = new TokenizeError(ch, "unknown character");
+      return err(e);
     }
 
     state.tokens.push(tok);
   }
 
-  return state.tokens;
+  return ok(state.tokens);
 };

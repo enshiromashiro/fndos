@@ -28,13 +28,29 @@ export const initializeShell = (): Shell => {
   return { ...shell };
 };
 
+const writeline = (sh: Shell, line: string) => {
+  sh.output = `${sh.output}\n${line}`;
+};
+
+const writeErr = (sh: Shell, msg: string) => {
+  writeline(sh, `err: ${msg}`);
+};
+
 export const evaluate = (sh: Shell, input: string): Shell => {
-  const toks = tokenize(input);
+  const _toks = tokenize(input);
+  if (_toks.err()) {
+    writeErr(sh, _toks.error.message);
+    return sh;
+  }
+
+  const toks = _toks.value;
   console.log(printTokens(toks));
+
   const ast = parse(toks);
   console.log(ast);
 
-  const result = input;
+  const result = `ast = ${ast}`;
+
   return {
     inputHistory: [...sh.inputHistory, input],
     output: `${sh.output}${input}\n${result}\n${prompt}`,
