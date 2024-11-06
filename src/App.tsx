@@ -9,9 +9,9 @@ const App = () => {
   const [shell, setShell] = useState<Shell>(initializeShell());
 
   const onEnter = () => {
-    const sh = evaluate(shell, input);
+    evaluate(shell, input);
     setInput("");
-    setShell(sh);
+    setShell(shell);
   };
 
   return (

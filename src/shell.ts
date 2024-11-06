@@ -36,7 +36,12 @@ const writeErr = (sh: Shell, msg: string) => {
   writeline(sh, `err: ${msg}`);
 };
 
-export const evaluate = (sh: Shell, input: string): Shell => {
+const writeResult = (sh: Shell, input: string, result: string) => {
+  sh.inputHistory.push(input);
+  sh.output = `${sh.output}${input}\n${result}\n${prompt}`;
+};
+
+export const evaluate = (sh: Shell, input: string) => {
   const _toks = tokenize(input);
   if (_toks.err()) {
     writeErr(sh, _toks.error.message);
@@ -52,11 +57,6 @@ export const evaluate = (sh: Shell, input: string): Shell => {
   }
   const prog = _prog.value;
 
-  console.table(prog);
-  const result = `${prog}`;
-
-  return {
-    inputHistory: [...sh.inputHistory, input],
-    output: `${sh.output}${input}\n${result}\n${prompt}`,
-  };
+  const result = `${prog.operand1 + prog.operand2}`;
+  writeResult(sh, input, result);
 };
