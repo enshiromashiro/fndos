@@ -42,14 +42,18 @@ export const evaluate = (sh: Shell, input: string): Shell => {
     writeErr(sh, _toks.error.message);
     return sh;
   }
-
   const toks = _toks.value;
   console.log(printTokens(toks));
 
-  const ast = parse(toks);
-  console.log(ast);
+  const _prog = parse(toks);
+  if (_prog.err()) {
+    writeErr(sh, _prog.error.message);
+    return sh;
+  }
+  const prog = _prog.value;
 
-  const result = `ast = ${ast}`;
+  console.table(prog);
+  const result = `${prog}`;
 
   return {
     inputHistory: [...sh.inputHistory, input],

@@ -1,30 +1,43 @@
 import { type Result, err, ok } from "./result";
 
 export enum TOKEN {
-  UNKNOWN = 0,
   END_OF_INPUT = 1,
   WHITESPACE = 2,
   INTEGER = 3,
   PLUS = 4,
 }
 
-export type Token = {
-  ttype: TOKEN;
-  s: string;
+type EndOfInputToken = {
+  kind: TOKEN.END_OF_INPUT;
+};
+type WhitespaceToken = {
+  kind: TOKEN.WHITESPACE;
+  spaces: string;
+};
+type IntegerToken = {
+  kind: TOKEN.INTEGER;
+  value: number;
+};
+type PlusToken = {
+  kind: TOKEN.PLUS;
 };
 
+export type Token =
+  | EndOfInputToken
+  | WhitespaceToken
+  | IntegerToken
+  | PlusToken;
+
 export const printToken = (tok: Token) => {
-  switch (tok.ttype) {
-    case TOKEN.UNKNOWN:
-      return `UNKOWN:${tok.s}`;
+  switch (tok.kind) {
     case TOKEN.END_OF_INPUT:
       return "EOI";
     case TOKEN.WHITESPACE:
-      return `SP:${tok.s === "\n" ? "NL" : "SP"}`;
+      return `SP:${tok.spaces === "\n" ? "NL" : "SP"}`;
     case TOKEN.PLUS:
       return "PLUS";
     case TOKEN.INTEGER:
-      return `INT:${tok.s}`;
+      return `INT:${tok.value}`;
   }
 };
 
@@ -46,14 +59,25 @@ const initTokenizer = (input: string): TokenizerState => {
   };
 };
 
-const getch = (state: TokenizerState): string | null => {
-  if (state.pos === state.input.length) {
-    return null;
-  }
-  const ch = state.input[state.pos];
-  state.pos++;
+const endOfInput = (state: TokenizerState): boolean =>
+  state.pos >= state.input.length;
+const peekch = (state: TokenizerState): string | null =>
+  endOfInput(state) ? null : state.input[state.pos];
+const getch = (state: TokenizerState): string | null =>
+  endOfInput(state) ? null : state.input[state.pos++];
 
-  return ch;
+const DIGITS = "0123456789";
+const isDigit = (ch: string): boolean => DIGITS.includes(ch);
+const WHITESPACES = " \n";
+const isWhitespace = (ch: string): boolean => WHITESPACES.includes(ch);
+
+const stringToInteger = (digits: string): number => {
+  let n = 0;
+  for (let i = 1; i <= digits.length; i++) {
+    const c = digits[digits.length - i];
+    n += DIGITS.indexOf(c) * 10 ** (i - 1);
+  }
+  return n;
 };
 
 class TokenizeError extends Error {
@@ -69,18 +93,29 @@ class TokenizeError extends Error {
   }
 }
 
-export const tokenize = (input: string): Result<Token[], TokenizeError> => {
-  const state = initTokenizer(input);
-
-  for (let ch = getch(state); ch !== null; ch = getch(state)) {
+const _tokenize = (state: TokenizerState): Result<Token[], TokenizeError> => {
+  for (let ch = peekch(state); ch !== null; ch = peekch(state)) {
     let tok: Token;
 
-    if ("0123456789".indexOf(ch) !== -1) {
-      tok = { ttype: TOKEN.INTEGER, s: ch };
+    if (isDigit(ch)) {
+      getch(state);
+      const chlis = [ch];
+      for (ch = peekch(state); ch && isDigit(ch); ch = peekch(state)) {
+        chlis.push(ch);
+        getch(state);
+      }
+      tok = { kind: TOKEN.INTEGER, value: stringToInteger(chlis.join("")) };
     } else if (ch === "+") {
-      tok = { ttype: TOKEN.PLUS, s: ch };
-    } else if (" \n".indexOf(ch) !== -1) {
-      tok = { ttype: TOKEN.WHITESPACE, s: ch };
+      getch(state);
+      tok = { kind: TOKEN.PLUS };
+    } else if (isWhitespace(ch)) {
+      getch(state);
+      const chlis = [ch];
+      for (ch = peekch(state); ch && isWhitespace(ch); ch = peekch(state)) {
+        chlis.push(ch);
+        getch(state);
+      }
+      tok = { kind: TOKEN.WHITESPACE, spaces: chlis.join("") };
     } else {
       const e = new TokenizeError(ch, "unknown character");
       return err(e);
@@ -91,3 +126,6 @@ export const tokenize = (input: string): Result<Token[], TokenizeError> => {
 
   return ok(state.tokens);
 };
+
+export const tokenize = (input: string): Result<Token[], TokenizeError> =>
+  _tokenize(initTokenizer(input));
