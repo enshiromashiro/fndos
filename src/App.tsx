@@ -12,6 +12,7 @@ const App = () => {
     evaluate(shell, input);
     setInput("");
     setShell(shell);
+    // TODO: ここでOutputAreaを最後の行までスクロールさせたい
   };
 
   return (
