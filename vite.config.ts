@@ -17,6 +17,7 @@ import("./system-info.json").then((sys) => {
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: "./",
   plugins: [react()],
   define: {
     "__SYSTEM_VERSION__": `"${system.version}"`,
