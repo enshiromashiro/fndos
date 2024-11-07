@@ -23,5 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
+# auto-generated system info
+system-info.json
+
 # bun's binary lock file
 bun.lockb
