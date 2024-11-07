@@ -11,6 +11,7 @@ const info = [
 ];
 const help = [
   "Type commands in the left and type Ctrl + Enter. So it evaluates input and pinrt result in the right.",
+  "Now, here is an addition only.",
 ];
 const initialOutput = `${info.join("\n")}\n\n${help.join("\n")}\n\n${prompt}`;
 
