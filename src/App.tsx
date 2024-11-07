@@ -2,6 +2,7 @@ import { useState } from "react";
 import "./App.css";
 import InputArea from "./console/InputArea";
 import OutputArea from "./console/OutputArea";
+import { SYSTEM_NAME } from "./const";
 import { type Shell, evaluate, initializeShell } from "./shell";
 
 const App = () => {
@@ -17,7 +18,7 @@ const App = () => {
 
   return (
     <>
-      <h1>funDOS</h1>
+      <h1>{SYSTEM_NAME}</h1>
       <div id="console">
         <div id="left-pane">
           <InputArea input={input} setInput={setInput} onEnter={onEnter} />

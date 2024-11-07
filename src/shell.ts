@@ -1,13 +1,12 @@
+import { SYSTEM_COMMIT_ID, SYSTEM_NAME, SYSTEM_VERSION } from "./const";
 import { parse } from "./parse";
 import { printTokens, tokenize } from "./tokenize";
 
-export const name = "FN-DOS";
-export const version = __APP_VERSION__;
 export const inputPlaceholder = "type something...";
 const prompt = "? ";
 
 const info = [
-  `${name} version ${version}`,
+  `${SYSTEM_NAME} version ${SYSTEM_VERSION} (${SYSTEM_COMMIT_ID})`,
   "Copyright 2024 by Whitespace Laboratory",
 ];
 const help = [

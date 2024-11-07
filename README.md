@@ -1,4 +1,4 @@
-# funDOS
+# fndOS
 
 A system for fun.
 
