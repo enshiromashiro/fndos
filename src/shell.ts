@@ -42,6 +42,11 @@ const writeResult = (sh: Shell, input: string, result: string) => {
 };
 
 export const evaluate = (sh: Shell, input: string) => {
+  if (input.trim() === "fndOS") {
+    writeResult(sh, input, "fndOS is a fundumental norinori dokidoki OS implementation");
+    return;
+  }
+
   const _toks = tokenize(input);
   if (_toks.err()) {
     writeErr(sh, _toks.error.message);
