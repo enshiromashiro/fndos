@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "sysinfo": "sh scripts/gen-sysinfo.sh",
-    "build": "tsc -b && vite build",
+    "dist": "sh scripts/gen-sysinfo.sh && tsc -b && vite build",
     "fmt": "biome check --unsafe --write ./src",
     "lint": "biome check ./src && tsc -p tsconfig.app.json",
     "fmt+": "biome check --unsafe --write ./src && tsc -p tsconfig.app.json",
