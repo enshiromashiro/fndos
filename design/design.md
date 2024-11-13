@@ -21,4 +21,4 @@ fndOSにおけるBASIC的立ち位置のプログラミング言語。HTML Canva
     - あと書きづらそう
     - あと読みにくいから英語やめれ
         - 自分用なんだからさ
-- [言語仕様スケッチ ver.2](fundus_v0.2.fn)
+- [言語仕様スケッチ ver.2](fundus_v0.2.fn) と [デバイス操作APIスケッチ](fundus_v0.2_devop.fn)
